@@ -1,6 +1,7 @@
 # Framework 13 Pro
 
 Installation script for Arch Linux on my Framework 13 Pro.
+
 Mostly based on Omarchy, with some changes and less bloat out of the box.
 
 # Start installation
