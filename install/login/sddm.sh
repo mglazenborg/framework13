@@ -7,6 +7,7 @@ if [[ ! -f /etc/sddm.conf.d/autologin.conf ]]; then
 User=$USER
 Session=hyprland-uwsm
 EOF
+fi
 
 # Prevent password-based SDDM logins from creating an encrypted login keyring
 # (which conflicts with the passwordless Default_keyring used for auto-unlock)
