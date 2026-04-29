@@ -11,3 +11,4 @@ export PATH="$FRAMEWORK13_PATH/install/helpers:$PATH"
 # Install
 source "$FRAMEWORK13_INSTALL/preflight/all.sh"
 source "$FRAMEWORK13_INSTALL/packages/all.sh"
+source "$FRAMEWORK13_INSTALL/login/all.sh"
