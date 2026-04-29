@@ -2,3 +2,26 @@
 
 1password-beta
 1password-cli
+avahi
+bash-completion
+brightnessctl
+fd
+fzf
+gnome-keyring
+gvfs-mtp
+gvfs-nfs
+gvfs-smb
+hyprland
+nvim
+plymouth
+ripgrep
+sddm
+starship
+swaybg
+tmux
+ttf-jetbrains-mono-nerd
+uwsm
+waybar
+xdg-desktop-portal-gtk
+xdg-dekstop-portal-hyprland
+yay-bin
