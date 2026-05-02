@@ -1,70 +1,115 @@
-import QtQuick
-import QtQuick.Layouts
-import QtQuick.Controls
+import QtQuick 2.0
+import QtQuick.Controls 2.0
+import SddmComponents 2.0
 
 Rectangle {
     id: root
     width: Screen.width
     height: Screen.height
     color: "#000000"
-    
-    // Animation sequence (replaces Plymouth's progress-0 to progress-119 images)
-    Image {
-        id: animatedImage
-        x: root.width / 2 - width / 2
-        y: root.height / 2 - height / 2
-        source: `images/progress-${Math.floor(animationTimer.frame % 120)}.png`
+
+    property int frame: 0
+    property string currentUser: userModel.lastUser
+    property int sessionIndex: {
+        for (var i = 0; i < sessionModel.rowCount(); i++) {
+            var name = (sessionModel.data(sessionModel.index(i, 0), Qt.DisplayRole) || "").toString()
+            if (name.indexOf("uwsm") !== -1)
+                return i
+        }
+        return sessionModel.lastIndex
     }
-    
-    // Animation timer
-    Timer {
-        id: animationTimer
-        property int frame: 0
-        running: true
-        interval: 50 // Adjust speed as needed
-        onTriggered: frame++
-    }
-    
-    // Password input
-    Rectangle {
-        anchors.centerIn: parent
-        width: 300
-        height: 150
-        color: "#1a1a1a"
-        radius: 10
-        
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: 20
-            
-            Text {
-                text: "Enter Password"
-                color: "white"
-                font.pixelSize: 16
-                Layout.alignment: Qt.AlignHCenter
-            }
-            
-            TextField {
-                id: passwordField
-                echoMode: TextInput.Password
-                Layout.fillWidth: true
-                placeholderText: "Password..."
-            }
-            
-            Button {
-                text: "Unlock"
-                Layout.alignment: Qt.AlignHCenter
-            }
+
+    Connections {
+        target: sddm
+        function onLoginFailed() {
+            errorMessage.text = "Login failed"
+            password.text = ""
+            password.focus = true
+        }
+        function onLoginSucceeded() {
+            errorMessage.text = ""
         }
     }
-    
-    // Message area
-    Text {
-        id: messageText
-        anchors.top: parent.top
-        anchors.topMargin: 20
-        anchors.horizontalCenter: parent.horizontalCenter
-        color: "white"
-        font.pixelSize: 14
+
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 0 //root.height * 0.04
+        width: parent.width
+
+        Timer {
+            interval: 30
+            running: true
+            repeat: true
+            onTriggered: {
+                frame = (frame + 1) % 120
+                anim.source = "progress-" + frame + ".png"
+            }
+        }
+
+        Item {
+            height: parent.height * 0.5 - 50
+        }
+
+        Image {
+            id: anim
+            source: "progress-0.png"
+            fillMode: Image.PreserveAspectFit
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        Row {
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: root.width * 0.007
+
+            Text {
+                text: "\uf023"
+                color: "#ffffff"
+                font.family: "JetBrainsMono Nerd Font"
+                font.pixelSize: root.height * 0.025
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            Rectangle {
+                width: root.width * 0.17
+                height: root.height * 0.04
+                color: "#000000"
+                border.color: "#ffffff"
+                border.width: 1
+                clip: true
+
+                TextInput {
+                    id: password
+                    anchors.fill: parent
+                    anchors.margins: root.height * 0.008
+                    verticalAlignment: TextInput.AlignVCenter
+                    echoMode: TextInput.Password
+                    font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: root.height * 0.02
+                    font.letterSpacing: root.height * 0.004
+                    passwordCharacter: "\u2022"
+                    color: "#ffffff"
+                    focus: true
+
+                    Keys.onPressed: {
+                        if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                            sddm.login(root.currentUser, password.text, root.sessionIndex)
+                            event.accepted = true
+                        }
+                    }
+                }
+            }
+
+            Text {
+                id: errorMessage
+                text: ""
+                color: "#f7768e"
+                font.family: "JetBrainsMono Nerd Font"
+                font.pixelSize: root.height * 0.018
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+        }
+
+        Component.onCompleted: password.forceActiveFocus()
     }
 }
