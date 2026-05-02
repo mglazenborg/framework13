@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sudo rm -rf /usr/share/sddm/themes/connect
+sudo cp -r $FRAMEWORK13_PATH/default/sddm/connect /usr/share/sddm/themes/connect
+
 sudo mkdir -p /etc/sddm.conf.d
 if [[ ! -f /etc/sddm.conf.d/autologin.conf ]]; then
   cat <<EOF | sudo tee /etc/sddm.conf.d/autologin.conf
