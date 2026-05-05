@@ -8,7 +8,6 @@ Rectangle {
     height: Screen.height
     color: "#000000"
 
-    property int frame: 0
     property string currentUser: userModel.lastUser
     property int sessionIndex: {
         for (var i = 0; i < sessionModel.rowCount(); i++) {
@@ -37,25 +36,11 @@ Rectangle {
         spacing: 0 //root.height * 0.04
         width: parent.width
 
-        Timer {
-            interval: 30
-            running: true
-            repeat: true
-            onTriggered: {
-                frame = (frame + 1) % 120
-                anim.source = "progress-" + frame + ".png"
-            }
-        }
-
-        Item {
-            height: parent.height * 0.5 - 50
-        }
-
-        Image {
+        AnimatedImage {
             id: anim
-            source: "progress-0.png"
-            fillMode: Image.PreserveAspectFit
+            source: "connect.gif"
             anchors.horizontalCenter: parent.horizontalCenter
+            fillMode: Image.PreserveAspectFit
         }
 
         Row {
