@@ -46,43 +46,51 @@ Rectangle {
         Column {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: root.height * 0.01
+            anchors.bottomMargin: root.height * 0.01 
             spacing: root.height * 0.01
-
+            
             Text {
                 text: "Enter Password"
                 color: "#ffffff"
                 font.family: "Sans"
-                font.pixelSize: 12
+                font.pixelSize: 18
                 anchors.horizontalCenter: parent.horizontalCenter
             }
 
-            Text {
-                id: bulletDisplay
-                text: password.text.length > 0
-                      ? "*".repeat(password.text.length)
-                      : " "
-                color: "#ffffff"
-                font.family: "Sans"
-                font.pixelSize: 12
+            Item {
+                width: root.width * 0.10
+                height: 20
                 anchors.horizontalCenter: parent.horizontalCenter
+
+                TextInput {
+                    id: password
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    echoMode: TextInput.Password
+                    font.family: "Sans"
+                    font.pixelSize: 14
+                    font.letterSpacing: root.height * 0.004
+                    passwordCharacter: "*"
+                    color: "#ffffff"
+                    focus: true
+
+                    Keys.onPressed: function(event) {
+                        if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                            sddm.login(root.currentUser, password.text, root.sessionIndex)
+                            event.accepted = true
+                        }
+                    }
+                }
             }
+        }
+
+        Text {
+            id: errorMessage
+            text: ""
+            color: "#f7768e"
+            font.pixelSize: 14
+            anchors.horizontalCenter: parent.horizontalCenter
         }
     }
 
-    TextInput {
-        id: password
-        opacity: 0
-        width: 1
-        height: 1
-        focus: true
-        anchors.bottom: parent.bottom
-
-        Keys.onPressed: function(event) {
-            if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-                sddm.login(root.currentUser, password.text, root.sessionIndex)
-                event.accepted = true
-            }
-        }
-    }
+    Component.onCompleted: password.forceActiveFocus()
 }
