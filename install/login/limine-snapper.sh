@@ -30,7 +30,7 @@ EOF
 
   CMDLINE=$(grep "^[[:space:]]*cmdline:" "$limine_config" | head -1 | sed 's/^[[:space:]]*cmdline:[[:space:]]*//')
 
-  sudo cp $FRAMEWORK13_PATH/default/limine/default.conf /etc/default/limine
+  sudo cp $ELPHAEL_PATH/default/limine/default.conf /etc/default/limine
   sudo sed -i "s|@@CMDLINE@@|$CMDLINE|g" /etc/default/limine
 
   # Append any drop-in kernel cmdline configs (from hardware fix scripts, etc.)
@@ -49,13 +49,13 @@ EOF
   fi
 
   # We overwrite the whole thing knowing the limine-update will add the entries for us
-  sudo cp $FRAMEWORK13_PATH/default/limine/limine.conf /boot/limine.conf
+  sudo cp $ELPHAEL_PATH/default/limine/limine.conf /boot/limine.conf
 
   # Only snapshot root — /home is user data; rolling it back loses user work
   if ! sudo snapper list-configs 2>/dev/null | grep -q "root"; then
     sudo snapper -c root create-config /
   fi
-  sudo cp $FRAMEWORK13_PATH/default/snapper/root /etc/snapper/configs/root
+  sudo cp $ELPHAEL_PATH/default/snapper/root /etc/snapper/configs/root
 
   # Disable btrfs quotas — full qgroup accounting is a major performance drag
   sudo btrfs quota disable / 2>/dev/null || true

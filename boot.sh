@@ -15,9 +15,9 @@ echo -e "\n$ascii\n"
 
 sudo pacman -Syu --noconfirm --needed git
 
-echo -e "\nCloning repo from: https://github.com/mglazenborg/framework13.git"
-rm -rf ~/.local/share/framework13
-git clone "https://github.com/mglazenborg/framework13.git" ~/.local/share/framework13 >/dev/null
+echo -e "\nCloning repo from: https://github.com/mglazenborg/elphael.git"
+rm -rf ~/.local/share/elphael
+git clone "https://github.com/mglazenborg/elphael.git" ~/.local/share/elphael >/dev/null
 
 echo -e "\nStarting installation..."
-source ~/.local/share/framework13/install.sh
+source ~/.local/share/elphael/install.sh

@@ -1,4 +1,4 @@
 #!/bin/bash
 
-source "$FRAMEWORK13_INSTALL/preflight/pacman.sh"
-source "$FRAMEWORK13_INSTALL/preflight/yay.sh"
+source "$ELPHAEL_INSTALL/preflight/pacman.sh"
+source "$ELPHAEL_INSTALL/preflight/yay.sh"
